@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../index.css">
+    <title>Document</title>
+</head>
+
+<body class="flex-col flex text-lg w-screen items-center justify-center bg-neutral-100">
+    <div class="flex flex-col items-center justify-center w-5/6 gap-2">
+        <h1 class="font-semibold">ОГКГ Ляшкевич Андрій СМПР-1</h1>
+        <div class="w-full grid grid-flow-col grid-cols-[1fr_auto] shadow-lg">
+            <label for="" class="w-full">
+                <input id="points_list" class="w-full p-2" type="text" name="" placeholder="Введіть точки">
+            </label>
+            <button class="p-2 bg-blue-600  text-white hover:bg-blue-700" onclick="draw()">Згенерувати</button>
+        </div>
+        <div class="w-full grid grid-flow-col grid-cols-[1fr_auto] shadow-lg">
+            <label for="">
+                <input class="w-full p-2" type="text" placeholder="К-ть випадкових точок" id="random_points">
+            </label>
+            <button class="p-2 bg-cyan-500 hover:bg-cyan-700 text-white" onclick="randomize()">Згенерувати</button>
+        </div>
+        <canvas class="border border-black" width="1000" height="600"></canvas>
+    </div>
+</body>
+<script src="../js.js"></script>
+<script>
+    function draw() {
+        const inp = document.querySelector('#points_list');
+        if (inp.value == '') return alert('Введіть точки');
+        const _points = (inp.value).split(',').map(v=>Number.parseInt(v));
+        if(_points.length%2!=0) return alert(`Не достатьно координат, ${_points.length}`);
+        let points = [];
+        for (let i = 0; i < _points.length; i += 2) {
+            if (_points[i + 1]) {
+                points.push([_points[i], _points[i + 1]]);
+            }
+        }
+        console.log('p', points);
+        drawPoints(points);
+    }
+    function randomize() {
+        const inp = document.querySelector('#random_points');
+        const inp2 = document.querySelector('#points_list');
+        let str = ''
+        console.log(inp);
+        const amnt = Number.parseInt(inp ? inp.value : 500) || 500;
+        const points = generateRandomPoints(amnt);
+        for(let point of points){
+            for(let coord of point){
+                str+=`${coord},`;
+            }
+        }
+        inp2.value = str.slice(0,-1);
+        drawPoints(points);
+    }
+</script>
+
+</html>
